@@ -60,23 +60,28 @@ A production-quality **Applicant Tracking System** built with the MERN stack. Ma
 ### 1. Clone & Install
 
 ```bash
+# Clone the repository
+git clone https://github.com/AryanSinghaniya/MiniATS_Assignment.git
+cd MiniATS_Assignment
+
 # Install server dependencies
-cd ats/server
+cd server
 npm install
 
 # Install client dependencies
 cd ../client
 npm install
+cd ..
 ```
 
 ### 2. Configure Environment Variables
 
 **Server** — copy and fill in your Atlas URI:
 ```bash
-cp ats/server/.env.example ats/server/.env
+cp server/.env.example server/.env
 ```
 
-Edit `ats/server/.env`:
+Edit `server/.env`:
 ```env
 PORT=5000
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/ats?retryWrites=true&w=majority
@@ -86,15 +91,16 @@ NODE_ENV=development
 
 **Client** — already configured for local dev (no changes needed):
 ```bash
-# ats/client/.env
+# client/.env
 VITE_API_URL=http://localhost:5000/api
 ```
 
 ### 3. Seed the Database
 
 ```bash
-cd ats/server
+cd server
 npm run seed
+cd ..
 ```
 
 This inserts **20 realistic candidates** spread across all hiring stages.
@@ -105,11 +111,11 @@ In two separate terminals:
 
 ```bash
 # Terminal 1 — Backend (port 5000)
-cd ats/server
+cd server
 npm run dev
 
 # Terminal 2 — Frontend (port 5173)
-cd ats/client
+cd client
 npm run dev
 ```
 
@@ -119,7 +125,7 @@ Then open **http://localhost:5173** 🎉
 
 ## 🌍 Environment Variables
 
-### Server (`ats/server/.env`)
+### Server (`server/.env`)
 
 | Variable | Required | Description |
 |---|---|---|
@@ -128,7 +134,7 @@ Then open **http://localhost:5173** 🎉
 | `CLIENT_URL` | No | Frontend URL for CORS (default: http://localhost:5173) |
 | `NODE_ENV` | No | `development` or `production` |
 
-### Client (`ats/client/.env`)
+### Client (`client/.env`)
 
 | Variable | Required | Description |
 |---|---|---|
@@ -176,7 +182,7 @@ Base URL: `http://localhost:5000/api`
 ## 📁 Folder Structure
 
 ```
-ats/
+MiniATS_Assignment/
 ├── server/
 │   ├── config/
 │   │   └── db.js               # MongoDB connection
