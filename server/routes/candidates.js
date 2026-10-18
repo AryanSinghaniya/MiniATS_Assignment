@@ -7,6 +7,7 @@ const {
   updateCandidate,
   updateStage,
   deleteCandidate,
+  exportCandidatesCSV,
 } = require('../controllers/candidateController');
 
 const router = express.Router();
@@ -35,6 +36,9 @@ const candidateValidation = [
 ];
 
 router.route('/').get(getCandidates).post(candidateValidation, createCandidate);
+
+// Export CSV route (MUST be defined before /:id so 'export' is not treated as an id parameter)
+router.route('/export').get(exportCandidatesCSV);
 
 router
   .route('/:id')

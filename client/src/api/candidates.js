@@ -21,3 +21,8 @@ export const deleteCandidate = (id) => api.delete(`/candidates/${id}`);
 
 /** Fetch dashboard metrics */
 export const getDashboard = () => api.get('/dashboard');
+
+/** Export candidates as CSV with filters */
+export const exportCandidatesCSV = (params) =>
+  api.get('/candidates/export', { params, responseType: 'blob' });
+

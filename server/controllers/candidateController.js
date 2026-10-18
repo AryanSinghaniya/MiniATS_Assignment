@@ -129,6 +129,55 @@ const deleteCandidate = asyncHandler(async (req, res) => {
   res.json({ success: true, message: 'Candidate deleted successfully' });
 });
 
+// Helper: escape CSV value according to RFC 4180
+const escapeCSV = (value) => {
+  if (value === null || value === undefined) return '';
+  const str = String(value);
+  if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+};
+
+// ─── GET /api/candidates/export ─────────────────────────────────────────────
+const exportCandidatesCSV = asyncHandler(async (req, res) => {
+  const { search = '', stage = '', sort = '-createdAt' } = req.query;
+
+  const filter = {};
+
+  if (stage && Candidate.STAGES.includes(stage)) {
+    filter.stage = stage;
+  }
+
+  if (search.trim()) {
+    filter.$text = { $search: search.trim() };
+  }
+
+  const candidates = await Candidate.find(filter).sort(sort).lean();
+
+  const headers = ['name', 'email', 'phone', 'position', 'skills', 'experience', 'stage', 'createdAt'];
+
+  const rows = candidates.map((c) => {
+    const skillsStr = Array.isArray(c.skills) ? c.skills.join(', ') : (c.skills || '');
+    return [
+      escapeCSV(c.name),
+      escapeCSV(c.email),
+      escapeCSV(c.phone || ''),
+      escapeCSV(c.position || ''),
+      escapeCSV(skillsStr),
+      escapeCSV(c.experience !== undefined && c.experience !== null ? c.experience : ''),
+      escapeCSV(c.stage || ''),
+      escapeCSV(c.createdAt ? new Date(c.createdAt).toISOString() : ''),
+    ].join(',');
+  });
+
+  const csvContent = [headers.join(','), ...rows].join('\n');
+
+  res.setHeader('Content-Type', 'text/csv');
+  res.setHeader('Content-Disposition', 'attachment; filename="candidates.csv"');
+  res.status(200).send(csvContent);
+});
+
 module.exports = {
   createCandidate,
   getCandidates,
@@ -136,4 +185,6 @@ module.exports = {
   updateCandidate,
   updateStage,
   deleteCandidate,
+  exportCandidatesCSV,
 };
+

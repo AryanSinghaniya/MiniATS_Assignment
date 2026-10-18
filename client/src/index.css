@@ -222,6 +222,18 @@ body {
 }
 .btn--ghost:hover:not(:disabled) { color: var(--text-primary); background: var(--surface-elevated); }
 
+.btn--secondary {
+  background: var(--surface-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+.btn--secondary:hover:not(:disabled) {
+  background: var(--surface-elevated);
+  border-color: var(--primary);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
 .btn--icon {
   background: transparent;
   padding: 0.4rem 0.6rem;

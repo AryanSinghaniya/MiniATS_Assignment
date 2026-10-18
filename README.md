@@ -20,7 +20,8 @@ A production-quality **Applicant Tracking System** built with the MERN stack. Ma
 | **Add/Edit Candidate** | Modal form with client-side validation + server error display |
 | **Pipeline (Kanban)** | Drag-and-drop with optimistic updates + rollback on failure |
 | **Candidate Detail** | Full profile view with all fields and notes |
-| **REST API** | 7 endpoints, pagination, text search, input validation, proper status codes |
+| **Export to CSV** | Instant CSV file download respecting active search and stage filters |
+| **REST API** | 8 endpoints, CSV export, pagination, text search, input validation, proper status codes |
 | **Dark Mode UI** | Glassmorphism, smooth animations, responsive (mobile-friendly) |
 | **Loading States** | Skeleton loaders + spinners everywhere |
 | **Toast Notifications** | Success/error toasts on all mutations |
@@ -158,6 +159,7 @@ Base URL: `http://localhost:5000/api`
 | `GET` | `/health` | Health check | 200 |
 | `POST` | `/candidates` | Create a candidate | 201, 400, 409 |
 | `GET` | `/candidates` | List with search/filter/pagination | 200 |
+| `GET` | `/candidates/export` | Download filtered candidates as RFC-4180 CSV | 200 |
 | `GET` | `/candidates/:id` | Get single candidate | 200, 404 |
 | `PUT` | `/candidates/:id` | Update all fields | 200, 400, 404, 409 |
 | `PATCH` | `/candidates/:id/stage` | Update stage only | 200, 400, 404 |
@@ -272,7 +274,6 @@ MiniATS_Assignment/
 - [ ] **File uploads** — Resume/CV attachment per candidate
 - [ ] **Interview scheduling** — Calendar integration
 - [ ] **Activity timeline** — Log every stage change with timestamp + user
-- [ ] **Export to CSV** — Download candidate list
 - [ ] **Analytics** — Time-to-hire, source tracking, funnel conversion rates
 - [ ] **Dark/Light mode toggle**
 - [ ] **TypeScript migration** for better type safety

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCandidates } from '../api/candidates';
+import toast from 'react-hot-toast';
+import { getCandidates, exportCandidatesCSV } from '../api/candidates';
 import CandidateTable from '../components/CandidateTable';
 import Pagination from '../components/Pagination';
 import Modal from '../components/Modal';
@@ -16,6 +17,7 @@ const Candidates = () => {
   const [candidates, setCandidates] = useState([]);
   const [pagination, setPagination] = useState({ total: 0, page: 1, pages: 1 });
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
 
   // Search / filter state
   const [search, setSearch] = useState('');
@@ -59,6 +61,32 @@ const Candidates = () => {
     fetchCandidates();
   };
 
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      const res = await exportCandidatesCSV({
+        search: debouncedSearch,
+        stage: stageFilter,
+      });
+
+      const blob = new Blob([res.data], { type: 'text/csv;charset=utf-8;' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const fileSuffix = stageFilter ? `_${stageFilter.toLowerCase()}` : '';
+      link.setAttribute('download', `candidates${fileSuffix}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      toast.success('Candidates exported to CSV!');
+    } catch (err) {
+      toast.error('Failed to export candidates');
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <div className="page">
       <div className="page-header">
@@ -68,13 +96,24 @@ const Candidates = () => {
             {pagination.total} candidate{pagination.total !== 1 ? 's' : ''} total
           </p>
         </div>
-        <button
-          id="add-candidate-btn"
-          className="btn btn--primary"
-          onClick={() => setShowAddModal(true)}
-        >
-          + Add Candidate
-        </button>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <button
+            id="export-csv-btn"
+            className="btn btn--secondary"
+            onClick={handleExport}
+            disabled={exporting}
+            title="Export filtered candidates to CSV"
+          >
+            {exporting ? 'Exporting...' : '📥 Export CSV'}
+          </button>
+          <button
+            id="add-candidate-btn"
+            className="btn btn--primary"
+            onClick={() => setShowAddModal(true)}
+          >
+            + Add Candidate
+          </button>
+        </div>
       </div>
 
       {/* Filters Row */}
