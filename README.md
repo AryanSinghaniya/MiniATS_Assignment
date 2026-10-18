@@ -1,8 +1,8 @@
 # 🎯 MiniATS — Mini Applicant Tracking System
 
 > **Live Demo & Links**
-> - 🔗 **Live App:** <ADD_VERCEL_URL>
-> - ⚙️ **API Health:** <ADD_RENDER_URL>/api/health
+> - 🔗 **Live App:** https://mini-ats-assignment.vercel.app
+> - ⚙️ **API Health:** https://mini-ats-backend-j8iq.onrender.com/api/health
 > - 🎥 **Demo Video:** <ADD_LOOM_URL>
 > 
 > *Note: The backend is hosted on Render's free tier and may take ~30-50 seconds to wake up on the first request after idling.*
