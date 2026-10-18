@@ -51,8 +51,8 @@ const candidateSchema = new mongoose.Schema(
   }
 );
 
-// Text index for full-text search on name, email, and skills
-candidateSchema.index({ name: 'text', email: 'text', skills: 'text' });
+// Text index for full-text search on name, email, position, and skills
+candidateSchema.index({ name: 'text', email: 'text', position: 'text', skills: 'text' });
 
 // Export the stage values so other modules can reference them
 candidateSchema.statics.STAGES = STAGES;

@@ -50,9 +50,15 @@ const getCandidates = asyncHandler(async (req, res) => {
     filter.stage = stage;
   }
 
-  // Full-text search on name, email, skills
+  // Search on name, email, position, and skills (case-insensitive regex)
   if (search.trim()) {
-    filter.$text = { $search: search.trim() };
+    const s = search.trim();
+    filter.$or = [
+      { name: { $regex: s, $options: 'i' } },
+      { email: { $regex: s, $options: 'i' } },
+      { position: { $regex: s, $options: 'i' } },
+      { skills: { $regex: s, $options: 'i' } },
+    ];
   }
 
   const pageNum = Math.max(1, parseInt(page, 10));
@@ -150,7 +156,13 @@ const exportCandidatesCSV = asyncHandler(async (req, res) => {
   }
 
   if (search.trim()) {
-    filter.$text = { $search: search.trim() };
+    const s = search.trim();
+    filter.$or = [
+      { name: { $regex: s, $options: 'i' } },
+      { email: { $regex: s, $options: 'i' } },
+      { position: { $regex: s, $options: 'i' } },
+      { skills: { $regex: s, $options: 'i' } },
+    ];
   }
 
   const candidates = await Candidate.find(filter).sort(sort).lean();
