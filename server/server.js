@@ -14,15 +14,25 @@ connectDB();
 const app = express();
 
 // ─── Core Middleware ───────────────────────────────────────────────────────
-// Allow the configured CLIENT_URL plus any localhost port (useful in dev when Vite picks an alternate port)
-const allowedOrigin = (origin, callback) => {
-  if (!origin || origin.startsWith('http://localhost') || origin === process.env.CLIENT_URL) {
-    callback(null, true);
-  } else {
-    callback(new Error('Not allowed by CORS'));
-  }
+// Allow configured CLIENT_URL (supports comma-separated list of origins) plus localhost in dev
+const rawClientUrls = process.env.CLIENT_URL || 'http://localhost:5173';
+const allowedOrigins = rawClientUrls.split(',').map((url) => url.trim()).filter(Boolean);
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      (process.env.NODE_ENV !== 'production' && origin.startsWith('http://localhost'))
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 };
-app.use(cors({ origin: allowedOrigin, credentials: true }));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
