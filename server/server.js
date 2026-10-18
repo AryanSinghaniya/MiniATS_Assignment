@@ -14,16 +14,22 @@ connectDB();
 const app = express();
 
 // ─── Core Middleware ───────────────────────────────────────────────────────
-// Allow configured CLIENT_URL (supports comma-separated list of origins) plus localhost in dev
+// Allow configured CLIENT_URL (supports comma-separated list of origins) plus localhost & all Vercel domains
 const rawClientUrls = process.env.CLIENT_URL || 'http://localhost:5173';
-const allowedOrigins = rawClientUrls.split(',').map((url) => url.trim()).filter(Boolean);
+const allowedOrigins = rawClientUrls
+  .split(',')
+  .map((url) => url.trim().replace(/\/+$/, ''))
+  .filter(Boolean);
 
 const corsOptions = {
   origin: (origin, callback) => {
+    const cleanOrigin = origin ? origin.replace(/\/+$/, '') : '';
     if (
       !origin ||
-      allowedOrigins.includes(origin) ||
-      (process.env.NODE_ENV !== 'production' && origin.startsWith('http://localhost'))
+      allowedOrigins.includes('*') ||
+      allowedOrigins.includes(cleanOrigin) ||
+      cleanOrigin.endsWith('.vercel.app') ||
+      (process.env.NODE_ENV !== 'production' && cleanOrigin.startsWith('http://localhost'))
     ) {
       callback(null, true);
     } else {
