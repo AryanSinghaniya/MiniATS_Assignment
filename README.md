@@ -1,5 +1,12 @@
 # 🎯 MiniATS — Mini Applicant Tracking System
 
+> **Live Demo & Links**
+> - 🔗 **Live App:** <ADD_VERCEL_URL>
+> - ⚙️ **API Health:** <ADD_RENDER_URL>/api/health
+> - 🎥 **Demo Video:** <ADD_LOOM_URL>
+> 
+> *Note: The backend is hosted on Render's free tier and may take ~30-50 seconds to wake up on the first request after idling.*
+
 A production-quality **Applicant Tracking System** built with the MERN stack. Manage candidates, track them through a hiring pipeline, search and filter, and view real-time dashboard analytics.
 
 ---
