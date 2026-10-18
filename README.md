@@ -3,7 +3,7 @@
 > **Live Demo & Links**
 > - 🔗 **Live App:** https://mini-ats-assignment.vercel.app
 > - ⚙️ **API Health:** https://mini-ats-backend-j8iq.onrender.com/api/health
-> - 🎥 **Demo Video:** <ADD_LOOM_URL>
+> - 🎥 **Demo Video:** https://www.loom.com/share/90c16039c168481cbc9ee3826b4a95ef
 > 
 > *Note: The backend is hosted on Render's free tier and may take ~30-50 seconds to wake up on the first request after idling.*
 
