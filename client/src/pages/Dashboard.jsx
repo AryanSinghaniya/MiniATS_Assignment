@@ -141,7 +141,7 @@ const Dashboard = () => {
                 }}
                 cursor={{ fill: 'rgba(99,102,241,0.08)' }}
               />
-              <Bar dataKey="count" name="Candidates" radius={[6, 6, 0, 0]}>
+              <Bar dataKey="count" name="Candidates" radius={[6, 6, 0, 0]} isAnimationActive={false}>
                 {data.byStage.map((entry, index) => (
                   <Cell key={entry.stage} fill={CHART_COLORS[index % CHART_COLORS.length]} />
                 ))}
